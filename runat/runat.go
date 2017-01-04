@@ -14,80 +14,69 @@ type Config struct {
 
 // Run ...
 func Run(t time.Time, config Config) time.Time {
-	noMonth := len(config.Month) == 0
-	noDay := len(config.Day) == 0
-	noHour := len(config.Hour) == 0
-	noMinute := len(config.Minute) == 0
-	noSecond := len(config.Second) == 0
-
-	if noMonth && noDay && noHour && noMinute && noSecond {
+	// Find smallest unit and start counting from there.
+	// At least have to increment by one.
+	switch {
+	case len(config.Second) > 0:
+		t = t.Add(time.Second).Truncate(time.Second)
+	case len(config.Minute) > 0:
+		t = t.Add(time.Minute).Truncate(time.Minute)
+	case len(config.Hour) > 0:
+		t = t.Add(time.Hour).Truncate(time.Hour)
+	case len(config.Day) > 0:
+		t = t.AddDate(0, 0, 1).Truncate(time.Hour * 24)
+	case len(config.Month) > 0:
+		t = t.AddDate(0, 1, 1-t.Day()).Truncate(time.Hour * 24)
+	default:
+		// Empty config
 		return t
 	}
-	if noDay && noHour && noMinute && noSecond {
-		t = t.AddDate(0, 1, 1-t.Day()).Truncate(time.Hour * 24)
-	} else if noHour && noMinute && noSecond {
-		t = t.AddDate(0, 0, 1).Truncate(time.Hour * 24)
-	} else if noMinute && noSecond {
-		t = t.Add(time.Hour).Truncate(time.Hour)
-	} else if noSecond {
-		t = t.Add(time.Minute).Truncate(time.Minute)
-	} else {
-		t = t.Add(time.Second).Truncate(time.Second)
-	}
 
+	// Walk until all units match.
+	// Adjust biggest unit first.
 	for {
-		monthOk := noMonth
-		for _, m := range config.Month {
-			if t.Month() == m {
-				monthOk = true
-				break
-			}
-		}
-
-		dayOk := noDay
-		for _, d := range config.Day {
-			if t.Day() == d {
-				dayOk = true
-				break
-			}
-		}
-
-		hourOk := noHour
-		for _, h := range config.Hour {
-			if t.Hour() == h {
-				hourOk = true
-				break
-			}
-		}
-
-		minuteOk := noMinute
-		for _, m := range config.Minute {
-			if t.Minute() == m {
-				minuteOk = true
-				break
-			}
-		}
-
-		secondOk := noSecond
-		for _, s := range config.Second {
-			if t.Second() == s {
-				secondOk = true
-				break
-			}
-		}
-
-		if !monthOk {
+		switch {
+		case wrongMonth(config.Month, t.Month()):
 			t = t.AddDate(0, 1, 1-t.Day()).Truncate(time.Hour * 24)
-		} else if !dayOk {
+		case wrong(config.Day, t.Day()):
 			t = t.AddDate(0, 0, 1).Truncate(time.Hour * 24)
-		} else if !hourOk {
+		case wrong(config.Hour, t.Hour()):
 			t = t.Add(time.Hour).Truncate(time.Hour)
-		} else if !minuteOk {
+		case wrong(config.Minute, t.Minute()):
 			t = t.Add(time.Minute).Truncate(time.Minute)
-		} else if !secondOk {
+		case wrong(config.Second, t.Second()):
 			t = t.Add(time.Second).Truncate(time.Second)
-		} else {
+		default:
+			// Found matching time.
 			return t
 		}
 	}
+}
+
+func wrong(xs []int, x int) bool {
+	if len(xs) == 0 {
+		return false
+	}
+	for _, y := range xs {
+		if x == y {
+			return false
+		}
+	}
+	return true
+}
+
+func wrongMonth(ms []time.Month, m time.Month) bool {
+	xs := make([]int, len(ms))
+	for i := range ms {
+		xs[i] = int(ms[i])
+	}
+	return wrong(xs, int(m))
+}
+
+func wrongWeekday(ds []time.Weekday, d time.Weekday) bool {
+	xs := make([]int, len(ds))
+	for i := range ds {
+		xs[i] = int(ds[i])
+	}
+	return wrong(xs, int(d))
 }
