@@ -16,22 +16,10 @@ type Condition struct {
 }
 
 // Next finds the next time the passed condition matches.
-func Next(t time.Time, c Condition) time.Time {
-	// Find smallest unit and start counting from there.
-	// At least have to increment by one.
-	switch {
-	case len(c.Second) > 0:
-		t = t.Add(time.Second).Truncate(time.Second)
-	case len(c.Minute) > 0:
-		t = t.Add(time.Minute).Truncate(time.Minute)
-	case len(c.Hour) > 0:
-		t = t.Add(time.Hour).Truncate(time.Hour)
-	case len(c.Day) > 0 || len(c.Weekday) > 0:
-		t = t.AddDate(0, 0, 1).Truncate(time.Hour * 24)
-	case len(c.Month) > 0:
-		t = t.AddDate(0, 1, 1-t.Day()).Truncate(time.Hour * 24)
-	default:
-		// Empty config
+func Next(start time.Time, c Condition) time.Time {
+	t := setBase(start, c)
+	// Stop when when no condition
+	if t.Equal(start) {
 		return t
 	}
 
@@ -53,6 +41,25 @@ func Next(t time.Time, c Condition) time.Time {
 			// Found matching time.
 			return t
 		}
+	}
+}
+
+// Find smallest unit and start counting from there.
+// At least have to increment by one.
+func setBase(t time.Time, c Condition) time.Time {
+	switch {
+	case len(c.Second) > 0:
+		return t.Add(time.Second).Truncate(time.Second)
+	case len(c.Minute) > 0:
+		return t.Add(time.Minute).Truncate(time.Minute)
+	case len(c.Hour) > 0:
+		return t.Add(time.Hour).Truncate(time.Hour)
+	case len(c.Day) > 0 || len(c.Weekday) > 0:
+		return t.AddDate(0, 0, 1).Truncate(time.Hour * 24)
+	case len(c.Month) > 0:
+		return t.AddDate(0, 1, 1-t.Day()).Truncate(time.Hour * 24)
+	default:
+		return t
 	}
 }
 
