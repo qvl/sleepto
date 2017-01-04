@@ -15,7 +15,7 @@ type monthlist struct {
 func (l *monthlist) String() string {
 	s := make([]string, len(l.list))
 	for i := range l.list {
-		s[i] = string(l.list[i])
+		s[i] = strconv.Itoa(int(l.list[i]))
 	}
 	return strings.Join(s, ",")
 }
@@ -23,11 +23,11 @@ func (l *monthlist) String() string {
 func (l *monthlist) Set(s string) error {
 	parts := strings.Split(s, ",")
 	for i, p := range parts {
-		i64, err := strconv.ParseInt(p, 10, 64)
+		xint, err := strconv.Atoi(p)
 		if err != nil {
 			return fmt.Errorf("no integer at index %d: %s", i, p)
 		}
-		x := time.Month(i64)
+		x := time.Month(xint)
 		if x < 1 || x > 12 {
 			return fmt.Errorf("invalid month: %d", x)
 		}

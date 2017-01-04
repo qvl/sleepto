@@ -16,7 +16,7 @@ type intlist struct {
 func (l *intlist) String() string {
 	s := make([]string, len(l.list))
 	for i := range l.list {
-		s[i] = string(l.list[i])
+		s[i] = strconv.Itoa(l.list[i])
 	}
 	return strings.Join(s, ",")
 }
@@ -24,11 +24,10 @@ func (l *intlist) String() string {
 func (l *intlist) Set(s string) error {
 	parts := strings.Split(s, ",")
 	for i, p := range parts {
-		i64, err := strconv.ParseInt(p, 10, 64)
+		x, err := strconv.Atoi(p)
 		if err != nil {
 			return fmt.Errorf("no integer at index %d: %s", i, p)
 		}
-		x := int(i64)
 		if x < l.min {
 			return fmt.Errorf("%d is smaller than minimum %d", x, l.min)
 		}
@@ -40,7 +39,7 @@ func (l *intlist) Set(s string) error {
 	return nil
 }
 
-// Intlist ...
+// Intlist defines a flag for a comma-separated list of integers.
 func Intlist(name, usage string, min, max int) []int {
 	l := &intlist{min: min, max: max}
 	flag.Var(l, name, usage)
