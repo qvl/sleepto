@@ -40,8 +40,11 @@ func (l *intlist) Set(s string) error {
 }
 
 // Intlist defines a flag for a comma-separated list of integers.
-func Intlist(name, usage string, min, max int) []int {
+// Call the returned function after flag.Parse to get the value.
+func Intlist(name, usage string, min, max int) func() []int {
 	l := &intlist{min: min, max: max}
 	flag.Var(l, name, usage)
-	return l.list
+	return func() []int {
+		return l.list
+	}
 }
