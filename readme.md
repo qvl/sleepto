@@ -1,15 +1,15 @@
-#  :floppy_disk: runat
+#  :floppy_disk: sleepto
 
-[![GoDoc](https://godoc.org/qvl.io/runat?status.svg)](https://godoc.org/qvl.io/runat)
-[![Build Status](https://travis-ci.org/qvl/runat.svg?branch=master)](https://travis-ci.org/qvl/runat)
-[![Go Report Card](https://goreportcard.com/badge/github.com/qvl/runat)](https://goreportcard.com/report/github.com/qvl/runat)
+[![GoDoc](https://godoc.org/qvl.io/sleepto?status.svg)](https://godoc.org/qvl.io/sleepto)
+[![Build Status](https://travis-ci.org/qvl/sleepto.svg?branch=master)](https://travis-ci.org/qvl/sleepto)
+[![Go Report Card](https://goreportcard.com/badge/github.com/qvl/sleepto)](https://goreportcard.com/report/github.com/qvl/sleepto)
 
 
 Like [runwhen](http://code.dogmap.org/runwhen/) but simpler:
 
 ## Syntax
 ```
-runat -a b ...
+sleepto -a b ...
 ```
 
 with:
@@ -30,11 +30,11 @@ second  in 0,...,60
 
 ``` sh
 # Every day at 1am
-runat -hour 1 && ~/bin/dbbackup.sh
+sleepto -hour 1 && ~/bin/dbbackup.sh
 # Every 1st of month at 1am
-runat -day 1 -hour 1 && ~/bin/letsencrypt-renew.sh
+sleepto -day 1 -hour 1 && ~/bin/letsencrypt-renew.sh
 # Every 15 minutes
-runat -minute 0,15,30,45 ~/bin/dbbackup.sh
+sleepto -minute 0,15,30,45 ~/bin/dbbackup.sh
 ```
 
 
@@ -44,9 +44,9 @@ runat -minute 0,15,30,45 ~/bin/dbbackup.sh
 
 ## Install
 
-- Via [Go](https://golang.org/) setup: `go get qvl.io/runat`
+- Via [Go](https://golang.org/) setup: `go get qvl.io/sleepto`
 
-- Or download latest binary: https://github.com/qvl/runat/releases
+- Or download latest binary: https://github.com/qvl/sleepto/releases
 
 
 ## Setup
@@ -56,13 +56,13 @@ runat -minute 0,15,30,45 ~/bin/dbbackup.sh
 
 ## Use as Go package
 
-From another Go program you can directly use the `runat` sub-package.
-Have a look at the [GoDoc](https://godoc.org/qvl.io/runat/runat).
+From another Go program you can directly use the `sleepto` sub-package.
+Have a look at the [GoDoc](https://godoc.org/qvl.io/sleepto/sleepto).
 
 
 ## Development
 
-Make sure to use `gofmt` and create a [Pull Request](https://github.com/qvl/runat/pulls).
+Make sure to use `gofmt` and create a [Pull Request](https://github.com/qvl/sleepto/pulls).
 
 ### Releasing
 

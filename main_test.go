@@ -12,8 +12,8 @@ import (
 )
 
 func TestMain(t *testing.T) {
-	pkg := "qvl.io/runat"
-	tmpBin := filepath.Join(os.TempDir(), "runat-"+strconv.FormatInt(time.Now().Unix(), 10))
+	pkg := "qvl.io/sleepto"
+	tmpBin := filepath.Join(os.TempDir(), "sleepto-"+strconv.FormatInt(time.Now().Unix(), 10))
 
 	// build temporary binary
 	cmd := exec.Command("go", "build", "-o", tmpBin, pkg)

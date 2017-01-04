@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -e
 
-NAME="runat"
+NAME="sleepto"
 # from args
 VERSION="${1}"
 test ${VERSION} || (echo "Usage: ./release.sh <version>" && exit 1)

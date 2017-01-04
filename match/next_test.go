@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"qvl.io/runat/match"
+	"qvl.io/sleepto/match"
 )
 
 func TestNext(t *testing.T) {

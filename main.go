@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	"qvl.io/runat/flags"
-	"qvl.io/runat/match"
+	"qvl.io/sleepto/flags"
+	"qvl.io/sleepto/match"
 )
 
 const usage = `Usage: %s [conditions]
@@ -21,11 +21,11 @@ Values are separated by comma.
 
 Examples:
   # Every day at 1am
-  runat -hour 1 && dbbackup.sh
+  sleepto -hour 1 && dbbackup.sh
   # Every 10th of month at 3pm
-  runat -day 10 -hour 15 && send-report
+  sleepto -day 10 -hour 15 && send-report
   # Every 15 minutes
-  runat -minute 0,15,30,45 && say "Hello"
+  sleepto -minute 0,15,30,45 && say "Hello"
 
 Flags:
 `
