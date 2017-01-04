@@ -39,6 +39,19 @@ func TestRun(t *testing.T) {
 
 		{
 			runat.Config{
+				Month:   []time.Month{1, 6},
+				Day:     []int{30, 15},
+				Weekday: []time.Weekday{time.Monday, time.Tuesday},
+				Hour:    []int{13},
+				Minute:  []int{55, 13},
+				Second:  []int{44, 1, 13},
+			},
+			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
+			time.Date(2018, 1, 15, 13, 13, 1, 0, time.UTC),
+		},
+
+		{
+			runat.Config{
 				Month: []time.Month{time.March},
 			},
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
@@ -59,6 +72,14 @@ func TestRun(t *testing.T) {
 			},
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
 			time.Date(2017, 3, 1, 0, 0, 0, 0, time.UTC),
+		},
+
+		{
+			runat.Config{
+				Weekday: []time.Weekday{time.Friday},
+			},
+			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
+			time.Date(2017, 2, 10, 0, 0, 0, 0, time.UTC),
 		},
 
 		{
@@ -132,6 +153,15 @@ func TestRun(t *testing.T) {
 
 		{
 			runat.Config{
+				Weekday: []time.Weekday{time.Friday, time.Tuesday},
+				Minute:  []int{2, 6},
+			},
+			time.Date(2017, 2, 4, 0, 7, 5, 8, time.UTC),
+			time.Date(2017, 2, 7, 0, 2, 0, 0, time.UTC),
+		},
+
+		{
+			runat.Config{
 				Hour:   []int{5, 15},
 				Second: []int{0, 30},
 			},
@@ -172,9 +202,9 @@ func TestRun(t *testing.T) {
 		if !res.Equal(tt.out) {
 			t.Errorf(`
 %d.
-Expected: %v
-Got:      %v
-`, i, tt.out, res)
+Expected: %v (%v)
+Got:      %v (%v)
+`, i, tt.out, tt.out.Weekday(), res, res.Weekday())
 		}
 	}
 

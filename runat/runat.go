@@ -23,7 +23,7 @@ func Run(t time.Time, config Config) time.Time {
 		t = t.Add(time.Minute).Truncate(time.Minute)
 	case len(config.Hour) > 0:
 		t = t.Add(time.Hour).Truncate(time.Hour)
-	case len(config.Day) > 0:
+	case len(config.Day) > 0 || len(config.Weekday) > 0:
 		t = t.AddDate(0, 0, 1).Truncate(time.Hour * 24)
 	case len(config.Month) > 0:
 		t = t.AddDate(0, 1, 1-t.Day()).Truncate(time.Hour * 24)
@@ -38,7 +38,7 @@ func Run(t time.Time, config Config) time.Time {
 		switch {
 		case wrongMonth(config.Month, t.Month()):
 			t = t.AddDate(0, 1, 1-t.Day()).Truncate(time.Hour * 24)
-		case wrong(config.Day, t.Day()):
+		case wrong(config.Day, t.Day()) || wrongWeekday(config.Weekday, t.Weekday()):
 			t = t.AddDate(0, 0, 1).Truncate(time.Hour * 24)
 		case wrong(config.Hour, t.Hour()):
 			t = t.Add(time.Hour).Truncate(time.Hour)
