@@ -39,7 +39,6 @@ runat -minute 0,15,30,45 ~/bin/dbbackup.sh
 
 
 - Trigger right away on `SIGALRM`
-- Waits forever (or til `SIGALRM`) when run without any conditions
 - Logs next execution time (to stderr) before sleeping when `-verbose` is active
 
 

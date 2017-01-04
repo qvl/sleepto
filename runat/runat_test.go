@@ -7,15 +7,21 @@ import (
 	"qvl.io/runat/runat"
 )
 
-func TestRun(t *testing.T) {
+func TestNextMatch(t *testing.T) {
 	table := []struct {
-		c   runat.Config
+		c   runat.Condition
 		in  time.Time
 		out time.Time
 	}{
 
 		{
-			runat.Config{
+			runat.Condition{},
+			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
+			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
+		},
+
+		{
+			runat.Condition{
 				Month:  []time.Month{1, 6},
 				Day:    []int{30, 15},
 				Hour:   []int{13},
@@ -26,7 +32,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Month:  []time.Month{1, 6},
 				Day:    []int{30, 15},
 				Hour:   []int{13},
@@ -38,7 +44,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Month:   []time.Month{1, 6},
 				Day:     []int{30, 15},
 				Weekday: []time.Weekday{time.Monday, time.Tuesday},
@@ -51,7 +57,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Month: []time.Month{time.March},
 			},
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
@@ -59,7 +65,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Month: []time.Month{time.February},
 			},
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
@@ -67,7 +73,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Day: []int{3, 1},
 			},
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
@@ -75,7 +81,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Weekday: []time.Weekday{time.Friday},
 			},
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
@@ -83,7 +89,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Hour: []int{0, 6, 18},
 			},
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
@@ -91,7 +97,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Minute: []int{55, 13},
 			},
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
@@ -99,7 +105,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Second: []int{3, 4},
 			},
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
@@ -107,7 +113,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Month: []time.Month{time.February},
 				Day:   []int{10},
 			},
@@ -116,7 +122,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Month: []time.Month{time.February},
 				Day:   []int{3},
 			},
@@ -125,7 +131,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Month:  []time.Month{time.February},
 				Second: []int{30},
 			},
@@ -134,7 +140,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Month: []time.Month{time.February},
 				Hour:  []int{10},
 			},
@@ -143,7 +149,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Day:    []int{4, 6},
 				Minute: []int{2, 6},
 			},
@@ -152,7 +158,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Weekday: []time.Weekday{time.Friday, time.Tuesday},
 				Minute:  []int{2, 6},
 			},
@@ -161,7 +167,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Hour:   []int{5, 15},
 				Second: []int{0, 30},
 			},
@@ -170,7 +176,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Hour:   []int{5, 15},
 				Second: []int{0, 30},
 			},
@@ -179,7 +185,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Month: []time.Month{1, 10},
 				Hour:  []int{2, 14},
 			},
@@ -188,7 +194,7 @@ func TestRun(t *testing.T) {
 		},
 
 		{
-			runat.Config{
+			runat.Condition{
 				Day:  []int{1, 20},
 				Hour: []int{2, 14},
 			},
@@ -198,7 +204,7 @@ func TestRun(t *testing.T) {
 	}
 
 	for i, tt := range table {
-		res := runat.Run(tt.in, tt.c)
+		res := runat.NextMatch(tt.in, tt.c)
 		if !res.Equal(tt.out) {
 			t.Errorf(`
 %d.
