@@ -10,7 +10,8 @@ import (
 	"qvl.io/sleepto/match"
 )
 
-const usage = `Usage: %s [conditions]
+const (
+	usage = `Usage: %s [conditions]
 
 Sleep until next time the specified conditions match.
 
@@ -29,6 +30,8 @@ Examples:
 
 Flags:
 `
+	more = "\nFor more visit: https://qvl.io/sleepto"
+)
 
 func main() {
 	var (
@@ -44,6 +47,7 @@ func main() {
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, usage, os.Args[0])
 		flag.PrintDefaults()
+		fmt.Fprintln(os.Stderr, more)
 	}
 	if len(os.Args) == 1 {
 		flag.Usage()

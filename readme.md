@@ -1,45 +1,47 @@
-#  :floppy_disk: sleepto
+#  :zzz: sleepto
 
 [![GoDoc](https://godoc.org/qvl.io/sleepto?status.svg)](https://godoc.org/qvl.io/sleepto)
 [![Build Status](https://travis-ci.org/qvl/sleepto.svg?branch=master)](https://travis-ci.org/qvl/sleepto)
-[![Go Report Card](https://goreportcard.com/badge/github.com/qvl/sleepto)](https://goreportcard.com/report/github.com/qvl/sleepto)
+[![Go Report Card](https://goreportcard.com/badge/qvl.io/sleepto)](https://goreportcard.com/report/qvl.io/sleepto)
 
 
 Like [runwhen](http://code.dogmap.org/runwhen/) but simpler:
 
-## Syntax
-```
-sleepto -a b ...
-```
+    Usage: sleepto [conditions]
 
-with:
+    Sleep until next time the specified conditions match.
 
-```
-month   in 1,...,12
-day     in 1,...,31
-weekday in mo,tu,we,th,fr,sa,su
-hour    in 0,...,24
-minute  in 0,...,60
-second  in 0,...,60
-```
+    Conditions are specified with flags.
+    All flags are optional and can be used in any combination.
+    The condition flags take one or more value each.
+    Values are separated by comma.
 
-(24/60 alias to 0)
+    Examples:
+      # Every day at 1am
+      sleepto -hour 1 && dbbackup.sh
+      # Every 10th of month at 3pm
+      sleepto -day 10 -hour 15 && send-report
+      # Every 15 minutes
+      sleepto -minute 0,15,30,45 && say "Hello"
 
+    Flags:
+      -day value
+            0 to 31
+      -hour value
+            0 to 23
+      -minute value
+            0 to 59
+      -month value
+            1 to 12
+      -second value
+            0 to 59
+      -verbose
+            display next run time
+      -weekday value
+            mo,tu,we,th,fr,sa,su
 
-## Examples
+    For more visit: https://qvl.io/sleepto
 
-``` sh
-# Every day at 1am
-sleepto -hour 1 && ~/bin/dbbackup.sh
-# Every 1st of month at 1am
-sleepto -day 1 -hour 1 && ~/bin/letsencrypt-renew.sh
-# Every 15 minutes
-sleepto -minute 0,15,30,45 ~/bin/dbbackup.sh
-```
-
-
-- Trigger right away on `SIGALRM`
-- Logs next execution time (to stderr) before sleeping when `-verbose` is active
 
 
 ## Install
@@ -54,15 +56,10 @@ sleepto -minute 0,15,30,45 ~/bin/dbbackup.sh
 *TODO*
 
 
-## Use as Go package
-
-From another Go program you can directly use the `sleepto` sub-package.
-Have a look at the [GoDoc](https://godoc.org/qvl.io/sleepto/sleepto).
-
-
 ## Development
 
 Make sure to use `gofmt` and create a [Pull Request](https://github.com/qvl/sleepto/pulls).
+
 
 ### Releasing
 
