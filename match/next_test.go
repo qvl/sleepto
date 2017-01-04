@@ -1,27 +1,27 @@
-package runat_test
+package match_test
 
 import (
 	"testing"
 	"time"
 
-	"qvl.io/runat/runat"
+	"qvl.io/runat/match"
 )
 
-func TestNextMatch(t *testing.T) {
+func TestNext(t *testing.T) {
 	table := []struct {
-		c   runat.Condition
+		c   match.Condition
 		in  time.Time
 		out time.Time
 	}{
 
 		{
-			runat.Condition{},
+			match.Condition{},
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Month:  []time.Month{1, 6},
 				Day:    []int{30, 15},
 				Hour:   []int{13},
@@ -32,7 +32,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Month:  []time.Month{1, 6},
 				Day:    []int{30, 15},
 				Hour:   []int{13},
@@ -44,7 +44,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Month:   []time.Month{1, 6},
 				Day:     []int{30, 15},
 				Weekday: []time.Weekday{time.Monday, time.Tuesday},
@@ -57,7 +57,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Month: []time.Month{time.March},
 			},
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
@@ -65,7 +65,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Month: []time.Month{time.February},
 			},
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
@@ -73,7 +73,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Day: []int{3, 1},
 			},
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
@@ -81,7 +81,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Weekday: []time.Weekday{time.Friday},
 			},
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
@@ -89,7 +89,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Hour: []int{0, 6, 18},
 			},
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
@@ -97,7 +97,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Minute: []int{55, 13},
 			},
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
@@ -105,7 +105,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Second: []int{3, 4},
 			},
 			time.Date(2017, 2, 4, 10, 7, 5, 8, time.UTC),
@@ -113,7 +113,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Month: []time.Month{time.February},
 				Day:   []int{10},
 			},
@@ -122,7 +122,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Month: []time.Month{time.February},
 				Day:   []int{3},
 			},
@@ -131,7 +131,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Month:  []time.Month{time.February},
 				Second: []int{30},
 			},
@@ -140,7 +140,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Month: []time.Month{time.February},
 				Hour:  []int{10},
 			},
@@ -149,7 +149,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Day:    []int{4, 6},
 				Minute: []int{2, 6},
 			},
@@ -158,7 +158,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Weekday: []time.Weekday{time.Friday, time.Tuesday},
 				Minute:  []int{2, 6},
 			},
@@ -167,7 +167,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Hour:   []int{5, 15},
 				Second: []int{0, 30},
 			},
@@ -176,7 +176,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Hour:   []int{5, 15},
 				Second: []int{0, 30},
 			},
@@ -185,7 +185,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Month: []time.Month{1, 10},
 				Hour:  []int{2, 14},
 			},
@@ -194,7 +194,7 @@ func TestNextMatch(t *testing.T) {
 		},
 
 		{
-			runat.Condition{
+			match.Condition{
 				Day:  []int{1, 20},
 				Hour: []int{2, 14},
 			},
@@ -204,7 +204,7 @@ func TestNextMatch(t *testing.T) {
 	}
 
 	for i, tt := range table {
-		res := runat.NextMatch(tt.in, tt.c)
+		res := match.Next(tt.in, tt.c)
 		if !res.Equal(tt.out) {
 			t.Errorf(`
 %d.

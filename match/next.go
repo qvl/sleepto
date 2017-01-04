@@ -1,4 +1,4 @@
-package runat
+package match
 
 import "time"
 
@@ -15,8 +15,8 @@ type Condition struct {
 	Second  []int // 0 to 59
 }
 
-// NextMatch finds the next time the passed condition is met.
-func NextMatch(t time.Time, c Condition) time.Time {
+// Next finds the next time the passed condition matches.
+func Next(t time.Time, c Condition) time.Time {
 	// Find smallest unit and start counting from there.
 	// At least have to increment by one.
 	switch {
