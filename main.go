@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"os/signal"
 	"syscall"
 	"time"
 
@@ -77,7 +78,13 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Running at %s\n", next.Format(time.RFC1123))
 	}
 
-	time.Sleep(next.Sub(now))
+	// Wait for timer or SIGALRM
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGALRM)
+	select {
+	case <-sigChan:
+	case <-time.After(next.Sub(now)):
+	}
 
 	// Replace current process if command is specified
 	cmd := flag.Arg(0)

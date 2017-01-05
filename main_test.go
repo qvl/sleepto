@@ -2,38 +2,49 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strconv"
+	"syscall"
 	"testing"
 	"time"
 )
 
-func TestEcho(t *testing.T) {
-	pkg := "qvl.io/sleepto"
-	tmpBin := filepath.Join(os.TempDir(), "sleepto-"+strconv.FormatInt(time.Now().Unix(), 10))
+const pkg = "qvl.io/sleepto"
 
-	// build temporary binary
-	cmd := exec.Command("go", "build", "-o", tmpBin, pkg)
+var tmpbin string
+
+// Provide temporary binary
+func TestMain(m *testing.M) {
+	tmpbin = filepath.Join(os.TempDir(), "sleepto-"+strconv.FormatInt(time.Now().Unix(), 10))
+	cmd := exec.Command("go", "build", "-o", tmpbin, pkg)
 	if err := cmd.Run(); err != nil {
-		t.Error(err)
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
-	defer func() {
-		if err := os.Remove(tmpBin); err != nil {
-			t.Error(err)
-		}
-	}()
 
+	code := m.Run()
+
+	if err := os.Remove(tmpbin); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	os.Exit(code)
+}
+
+func TestEcho(t *testing.T) {
 	done := make(chan struct{})
-	now := time.Now()
-	s := now.Second()
 
 	// Run binary
 	go func() {
+		now := time.Now()
+		s := now.Second()
 		want := "hello test"
-		cmd = exec.Command(tmpBin, "-second", fmt.Sprintf("%d,%d", (s+3)%60, (s+50)%60), "echo", want)
+		cmd := exec.Command(tmpbin, "-second", fmt.Sprintf("%d,%d", (s+3)%60, (s+50)%60), "echo", want)
 		var stderr bytes.Buffer
 		cmd.Stderr = &stderr
 		out, err := cmd.Output()
@@ -46,18 +57,40 @@ func TestEcho(t *testing.T) {
 		equal(t, want, stderr.String(), "stderr")
 	}()
 
-	// Check timing between 2 and 3 seconds
+	if err := timing(done, 2, 3); err != nil {
+		t.Error(err)
+	}
+}
+
+func TestAlarm(t *testing.T) {
+	done := make(chan struct{})
+	m := strconv.Itoa(int(time.Now().Month()))
+	want := "hello alarm"
+	cmd := exec.Command(tmpbin, "-month", m, "-silent", "echo", want)
+
+	// Run binary
 	go func() {
-		select {
-		case <-done:
-			t.Error("Waiting too short")
-		case <-time.After(2 * time.Second):
+		var stderr bytes.Buffer
+		cmd.Stderr = &stderr
+
+		out, err := cmd.Output()
+		if err != nil {
+			t.Error(err)
+		}
+		close(done)
+		equal(t, want+"\n", string(out), "stdout")
+		equal(t, "", stderr.String(), "stderr")
+	}()
+
+	go func() {
+		time.Sleep(2 * time.Second)
+		if err := cmd.Process.Signal(syscall.SIGALRM); err != nil {
+			t.Error(err)
 		}
 	}()
-	select {
-	case <-time.After(3 * time.Second):
-		t.Error("Waiting too long")
-	case <-done:
+
+	if err := timing(done, 2, 3); err != nil {
+		t.Error(err)
 	}
 }
 
@@ -68,4 +101,18 @@ Expected: %s
 Got:      %s
 `, msg, want, got)
 	}
+}
+
+func timing(done chan struct{}, min, max time.Duration) error {
+	select {
+	case <-done:
+		return errors.New("too quick")
+	case <-time.After(min * time.Second):
+	}
+	select {
+	case <-time.After((max - min) * time.Second):
+		return errors.New("too slow")
+	case <-done:
+	}
+	return nil
 }
