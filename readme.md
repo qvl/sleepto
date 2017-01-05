@@ -66,9 +66,17 @@ Thanks to [runwhen](http://code.dogmap.org/runwhen/) for inspiration.
 
 ## Install
 
-- Via [Go](https://golang.org/) setup: `go get qvl.io/sleepto`
+- With [Go](https://golang.org/):
+```
+go get qvl.io/sleepto
+```
 
-- Or download latest binary: https://github.com/qvl/sleepto/releases
+- With [Homebrew](http://brew.sh/):
+```
+brew install qvl/tap/sleepto
+```
+
+- Download binary: https://github.com/qvl/sleepto/releases
 
 
 ## Setup
@@ -87,7 +95,7 @@ Make sure to use `gofmt` and create a [Pull Request](https://github.com/qvl/slee
 
 ### Releasing
 
-Run `./release.sh <version>` and upload the binaries on Github.
+Push a new Git tag and [GoReleaser](https://github.com/goreleaser/releaser) will automatically create a release.
 
 
 ## License
