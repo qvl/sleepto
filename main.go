@@ -35,7 +35,7 @@ Flags:
 
 func main() {
 	var (
-		verbose = flag.Bool("verbose", false, "display next run time")
+		silent  = flag.Bool("silent", false, "Surpress all output")
 		month   = flags.Monthlist("month", "1 to 12")
 		weekday = flags.Weekdaylist("weekday", "mo,tu,we,th,fr,sa,su")
 		day     = flags.Intlist("day", "0 to 31", 0, 31)
@@ -66,7 +66,7 @@ func main() {
 		Second:  second(),
 	})
 
-	if *verbose {
+	if !*silent {
 		fmt.Fprintf(os.Stderr, "Running at %s\n", next.Format(time.RFC1123))
 	}
 

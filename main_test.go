@@ -46,7 +46,7 @@ func TestMain(t *testing.T) {
 	}()
 
 	// Run binary
-	cmd = exec.Command(tmpBin, "-verbose", "-second", fmt.Sprintf("%d,%d", (s+5)%60, (s+50)%60))
+	cmd = exec.Command(tmpBin, "-second", fmt.Sprintf("%d,%d", (s+5)%60, (s+50)%60))
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 	out, err := cmd.Output()
