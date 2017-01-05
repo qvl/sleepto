@@ -26,6 +26,8 @@ Values are separated by comma.
 A command can be specified optionally.
 All arguments following the command are passed to it.
 
+When the process receives a SIGALRM signal it finishes immediately.
+
 Examples:
   # Every 10th of month at 3pm
   sleepto -day 10 -hour 15 /bin/send-report

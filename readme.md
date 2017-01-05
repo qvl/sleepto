@@ -5,9 +5,24 @@
 [![Go Report Card](https://goreportcard.com/badge/qvl.io/sleepto)](https://goreportcard.com/report/qvl.io/sleepto)
 
 
-Like [runwhen](http://code.dogmap.org/runwhen/) but simpler:
+`sleepto` is a simple alternative to task schedulers like [Cron](https://en.wikipedia.org/wiki/Cron).
 
-    Usage: sleepto [conditions]
+It only handles the timing and doesn't run a daemon like other schedulers do.
+Instead we encourage you to use your systems default init system (for example [Systemd](#systemd)) to control your jobs.
+This allows you to:
+
+- Use and watch scheduled jobs the way you use all other services running on your system (for example using `ps`).
+- Start and pause jobs like any other service on your system.
+- Use your systems default logging system.
+- No conflicts - next task is only scheduled after previous one finished.
+- Trigger immediate execution by sending a `SIGALRM` signal.
+- Specify execution times with the precision of seconds (Cron only support minutes).
+- Always know the time of the next execution.
+
+Thanks to [runwhen](http://code.dogmap.org/runwhen/) for inspiration.
+
+
+    Usage: sleepto [flags...] [command...]
 
     Sleep until next time the specified conditions match.
 
@@ -16,29 +31,34 @@ Like [runwhen](http://code.dogmap.org/runwhen/) but simpler:
     The condition flags take one or more value each.
     Values are separated by comma.
 
+    A command can be specified optionally.
+    All arguments following the command are passed to it.
+
+    When the process receives a SIGALRM signal it finishes immediately.
+
     Examples:
-      # Every day at 1am
-      sleepto -hour 1 && dbbackup.sh
       # Every 10th of month at 3pm
-      sleepto -day 10 -hour 15 && send-report
+      sleepto -day 10 -hour 15 /bin/send-report
       # Every 15 minutes
-      sleepto -minute 0,15,30,45 && say "Hello"
+      sleepto -minute 0,15,30,45 say "Hello human"
+      # Every day at 1am
+      sleepto -hour 1 && ~/dbbackup.sh
 
     Flags:
       -day value
-            0 to 31
+          0 to 31
       -hour value
-            0 to 23
+          0 to 23
       -minute value
-            0 to 59
+          0 to 59
       -month value
-            1 to 12
+          1 to 12
       -second value
-            0 to 59
-      -verbose
-            display next run time
+          0 to 59
+      -silent
+          Surpress all output
       -weekday value
-            mo,tu,we,th,fr,sa,su
+          mo,tu,we,th,fr,sa,su
 
     For more visit: https://qvl.io/sleepto
 
@@ -52,6 +72,10 @@ Like [runwhen](http://code.dogmap.org/runwhen/) but simpler:
 
 
 ## Setup
+
+`sleepto` can be used in different scenarios but the most common one is probably to combine it with an init system.
+
+## [Systemd](https://en.wikipedia.org/wiki/Systemd)
 
 *TODO*
 
