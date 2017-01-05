@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func TestMain(t *testing.T) {
+func TestEcho(t *testing.T) {
 	pkg := "qvl.io/sleepto"
 	tmpBin := filepath.Join(os.TempDir(), "sleepto-"+strconv.FormatInt(time.Now().Unix(), 10))
 
@@ -30,34 +30,35 @@ func TestMain(t *testing.T) {
 	now := time.Now()
 	s := now.Second()
 
-	// Check binary timing
+	// Run binary
+	go func() {
+		want := "hello test"
+		cmd = exec.Command(tmpBin, "-second", fmt.Sprintf("%d,%d", (s+3)%60, (s+50)%60), "echo", want)
+		var stderr bytes.Buffer
+		cmd.Stderr = &stderr
+		out, err := cmd.Output()
+		if err != nil {
+			t.Error(err)
+		}
+		close(done)
+		equal(t, want+"\n", string(out), "stdout")
+		want = fmt.Sprintf("Running at %s\n", now.Add(3*time.Second).Format(time.RFC1123))
+		equal(t, want, stderr.String(), "stderr")
+	}()
+
+	// Check timing between 2 and 3 seconds
 	go func() {
 		select {
 		case <-done:
 			t.Error("Waiting too short")
-		case <-time.After(4 * time.Second):
-		}
-
-		select {
-		case <-time.After(5 * time.Second):
-			t.Error("Waiting too long")
-		case <-done:
+		case <-time.After(2 * time.Second):
 		}
 	}()
-
-	// Run binary
-	want := "hello test"
-	cmd = exec.Command(tmpBin, "-second", fmt.Sprintf("%d,%d", (s+5)%60, (s+50)%60), "echo", want)
-	var stderr bytes.Buffer
-	cmd.Stderr = &stderr
-	out, err := cmd.Output()
-	if err != nil {
-		t.Error(err)
+	select {
+	case <-time.After(3 * time.Second):
+		t.Error("Waiting too long")
+	case <-done:
 	}
-	close(done)
-	equal(t, want+"\n", string(out), "stdout")
-	want = fmt.Sprintf("Running at %s\n", now.Add(5*time.Second).Format(time.RFC1123))
-	equal(t, want, stderr.String(), "stderr")
 }
 
 func equal(t *testing.T, want, got, msg string) {
