@@ -77,7 +77,7 @@ func main() {
 	}
 
 	if !*silent {
-		fmt.Fprintf(os.Stderr, "Running at %s\n", next.Format(time.RFC1123))
+		fmt.Fprintf(os.Stderr, "sleeping until: %s\n", next.Format(time.RFC1123))
 	}
 
 	// Wait for timer or SIGALRM

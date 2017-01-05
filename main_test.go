@@ -53,7 +53,7 @@ func TestEcho(t *testing.T) {
 		}
 		close(done)
 		equal(t, want+"\n", string(out), "stdout")
-		want = fmt.Sprintf("Running at %s\n", now.Add(3*time.Second).Format(time.RFC1123))
+		want = fmt.Sprintf("sleeping until: %s\n", now.Add(3*time.Second).Format(time.RFC1123))
 		equal(t, want, stderr.String(), "stderr")
 	}()
 
