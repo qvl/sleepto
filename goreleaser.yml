@@ -1,0 +1,15 @@
+repo: qvl/sleepto
+binary_name: sleepto
+brew:
+  repo: qvl/brew
+build:
+  arches:
+    - amd64
+    - 386
+  oses:
+    - windows
+    - darwin
+    - linux
+files:
+  - readme.md
+  - license
