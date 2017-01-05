@@ -46,7 +46,8 @@ func TestMain(t *testing.T) {
 	}()
 
 	// Run binary
-	cmd = exec.Command(tmpBin, "-second", fmt.Sprintf("%d,%d", (s+5)%60, (s+50)%60))
+	want := "hello test"
+	cmd = exec.Command(tmpBin, "-second", fmt.Sprintf("%d,%d", (s+5)%60, (s+50)%60), "echo", want)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 	out, err := cmd.Output()
@@ -54,17 +55,16 @@ func TestMain(t *testing.T) {
 		t.Error(err)
 	}
 	close(done)
+	equal(t, want+"\n", string(out), "stdout")
+	want = fmt.Sprintf("Running at %s\n", now.Add(5*time.Second).Format(time.RFC1123))
+	equal(t, want, stderr.String(), "stderr")
+}
 
-	// Check binary output
-	if len(out) > 0 {
-		t.Errorf("no stdout expected but got: %s", out)
-	}
-	info := fmt.Sprintf("Running at %s\n", now.Add(5*time.Second).Format(time.RFC1123))
-	msg := stderr.String()
-	if msg != info {
-		t.Errorf(`Unexpected message
+func equal(t *testing.T, want, got, msg string) {
+	if want != got {
+		t.Errorf(`%s
 Expected: %s
 Got:      %s
-`, info, msg)
+`, msg, want, got)
 	}
 }

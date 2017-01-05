@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"os/exec"
+	"syscall"
 	"time"
 
 	"qvl.io/sleepto/flags"
@@ -11,7 +13,7 @@ import (
 )
 
 const (
-	usage = `Usage: %s [conditions]
+	usage = `Usage: %s [flags...] [command...]
 
 Sleep until next time the specified conditions match.
 
@@ -20,13 +22,16 @@ All flags are optional and can be used in any combination.
 The condition flags take one or more value each.
 Values are separated by comma.
 
+A command can be specified optionally.
+All arguments following the command are passed to it.
+
 Examples:
-  # Every day at 1am
-  sleepto -hour 1 && dbbackup.sh
   # Every 10th of month at 3pm
-  sleepto -day 10 -hour 15 && send-report
+  sleepto -day 10 -hour 15 /bin/send-report
   # Every 15 minutes
-  sleepto -minute 0,15,30,45 && say "Hello"
+  sleepto -minute 0,15,30,45 say "Hello human"
+  # Every day at 1am
+  sleepto -hour 1 && ~/dbbackup.sh
 
 Flags:
 `
@@ -49,10 +54,6 @@ func main() {
 		flag.PrintDefaults()
 		fmt.Fprintln(os.Stderr, more)
 	}
-	if len(os.Args) == 1 {
-		flag.Usage()
-		os.Exit(1)
-	}
 	flag.Parse()
 
 	now := time.Now()
@@ -66,9 +67,28 @@ func main() {
 		Second:  second(),
 	})
 
+	// No conditions specified
+	if next.Equal(now) {
+		flag.Usage()
+		os.Exit(1)
+	}
+
 	if !*silent {
 		fmt.Fprintf(os.Stderr, "Running at %s\n", next.Format(time.RFC1123))
 	}
 
 	time.Sleep(next.Sub(now))
+
+	// Replace current process if command is specified
+	cmd := flag.Arg(0)
+	if len(cmd) > 0 {
+		cmdAbs, err := exec.LookPath(cmd)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+		}
+		err = syscall.Exec(cmdAbs, flag.Args(), os.Environ())
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+		}
+	}
 }
