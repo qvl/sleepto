@@ -6,12 +6,15 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
+	"runtime"
 	"syscall"
 	"time"
 
 	"qvl.io/sleepto/flags"
 	"qvl.io/sleepto/match"
 )
+
+const version = "v0.2"
 
 const (
 	usage = `Usage: %s [flags...] [command...]
@@ -43,13 +46,14 @@ Flags:
 
 func main() {
 	var (
-		silent  = flag.Bool("silent", false, "Surpress all output")
-		month   = flags.Monthlist("month", "1 to 12")
-		weekday = flags.Weekdaylist("weekday", "mo,tu,we,th,fr,sa,su")
-		day     = flags.Intlist("day", "0 to 31", 0, 31)
-		hour    = flags.Intlist("hour", "0 to 23", 0, 23)
-		minute  = flags.Intlist("minute", "0 to 59", 0, 59)
-		second  = flags.Intlist("second", "0 to 59", 0, 59)
+		silent      = flag.Bool("silent", false, "Surpress all output")
+		versionFlag = flag.Bool("version", false, "Print binary version")
+		month       = flags.Monthlist("month", "1 to 12")
+		weekday     = flags.Weekdaylist("weekday", "mo,tu,we,th,fr,sa,su")
+		day         = flags.Intlist("day", "0 to 31", 0, 31)
+		hour        = flags.Intlist("hour", "0 to 23", 0, 23)
+		minute      = flags.Intlist("minute", "0 to 59", 0, 59)
+		second      = flags.Intlist("second", "0 to 59", 0, 59)
 	)
 
 	flag.Usage = func() {
@@ -58,6 +62,11 @@ func main() {
 		fmt.Fprintln(os.Stderr, more)
 	}
 	flag.Parse()
+
+	if *versionFlag {
+		fmt.Printf("ghbackup %s %s %s\n", version, runtime.GOOS, runtime.GOARCH)
+		os.Exit(0)
+	}
 
 	now := time.Now()
 

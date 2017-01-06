@@ -57,6 +57,8 @@ Thanks to [runwhen](http://code.dogmap.org/runwhen/) for inspiration.
           0 to 59
       -silent
           Surpress all output
+      -version
+          Print binary version
       -weekday value
           mo,tu,we,th,fr,sa,su
 
