@@ -14,7 +14,7 @@ import (
 	"qvl.io/sleepto/match"
 )
 
-const version = "v0.2"
+const version = "v0.3"
 
 const (
 	usage = `Usage: %s [flags...] [command...]
@@ -97,15 +97,13 @@ func main() {
 	case <-time.After(next.Sub(now)):
 	}
 
-	// Replace current process if command is specified
-	cmd := flag.Arg(0)
-	if len(cmd) > 0 {
-		cmdAbs, err := exec.LookPath(cmd)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-		}
-		err = syscall.Exec(cmdAbs, flag.Args(), os.Environ())
-		if err != nil {
+	// Run command if specified
+	args := flag.Args()
+	if len(args) > 0 {
+		cmd := exec.Command(args[0], args[1:]...)
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		if err := cmd.Run(); err != nil {
 			fmt.Fprintln(os.Stderr, err)
 		}
 	}
