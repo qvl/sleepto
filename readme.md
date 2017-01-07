@@ -78,16 +78,31 @@ go get qvl.io/sleepto
 brew install qvl/tap/sleepto
 ```
 
-- Download binary: https://github.com/qvl/sleepto/releases
+- Download from https://github.com/qvl/sleepto/releases
 
 
 ## Setup
 
 `sleepto` can be used in different scenarios but the most common one is probably to combine it with an init system.
 
-## [Systemd](https://en.wikipedia.org/wiki/Systemd)
+### [Systemd](https://en.wikipedia.org/wiki/Systemd)
 
-*TODO*
+[Systemd](https://en.wikipedia.org/wiki/Systemd) already runs on most Linux systems.
+
+See [ghbackup for an example](https://github.com/qvl/ghbackup#systemd-and-sleepto) on how to use `sleepto` in a service.
+
+- See the logs for your service use:
+```
+sudo journalctl -u servicename
+```
+- List processes which should include your service:
+```
+ps fux
+```
+- Immediately finish sleeping:
+```
+kill -s ALRM YOUR_PID
+```
 
 
 ## Development
