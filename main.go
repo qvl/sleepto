@@ -14,7 +14,8 @@ import (
 	"qvl.io/sleepto/match"
 )
 
-const version = "v0.3"
+// Can be set in build step using -ldflags
+var version string
 
 const (
 	usage = `Usage: %s [flags...] [command...]
