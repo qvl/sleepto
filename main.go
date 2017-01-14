@@ -1,3 +1,6 @@
+// Package main starts the sleepto binary.
+// Argument parsing, usage information and the actual execution can be found here.
+// See package match for independent usage of the timing functionality.
 package main
 
 import (

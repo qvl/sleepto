@@ -1,3 +1,5 @@
+// Package match provides functionality to find matching times.
+// This is the core logic of sleepto.
 package match
 
 import "time"
