@@ -89,6 +89,9 @@ brew install qvl/tap/sleepto
 
 [Systemd](https://en.wikipedia.org/wiki/Systemd) already runs on most Linux systems.
 
+It even has its own [timer implementation](https://www.freedesktop.org/software/systemd/man/systemd.timer.html).
+However, it's more complex than what you probably need and for many scenarios you might prefer to use the simple and portable `sleepto` instead.
+
 See [ghbackup for an example](https://github.com/qvl/ghbackup#systemd-and-sleepto) on how to use `sleepto` in a service.
 
 - See the logs for your service use:
