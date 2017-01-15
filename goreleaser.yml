@@ -1,15 +1,17 @@
-repo: qvl/sleepto
-binary_name: sleepto
+release:
+  repo: qvl/sleepto
 brew:
   repo: qvl/brew
 build:
-  arches:
+  binary_name: sleepto
+  goarch:
     - amd64
     - 386
-  oses:
+  goos:
     - windows
     - darwin
     - linux
-files:
-  - readme.md
-  - license
+archive:
+  files:
+    - readme.md
+    - license
