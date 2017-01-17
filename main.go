@@ -50,7 +50,7 @@ Flags:
 
 func main() {
 	var (
-		silent      = flag.Bool("silent", false, "Surpress all output")
+		silent      = flag.Bool("silent", false, "Suppress all output")
 		versionFlag = flag.Bool("version", false, "Print binary version")
 		month       = flags.Monthlist("month", "1 to 12")
 		weekday     = flags.Weekdaylist("weekday", "mo,tu,we,th,fr,sa,su")
