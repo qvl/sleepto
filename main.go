@@ -101,14 +101,19 @@ func main() {
 	case <-time.After(next.Sub(now)):
 	}
 
-	// Run command if specified
+	// Replace current process if command is specified
 	args := flag.Args()
-	if len(args) > 0 {
-		cmd := exec.Command(args[0], args[1:]...)
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		if err := cmd.Run(); err != nil {
-			fmt.Fprintln(os.Stderr, err)
-		}
+	if len(args) == 0 {
+		return
+	}
+	cmd, err := exec.LookPath(args[0])
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	err = syscall.Exec(cmd, args, os.Environ())
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 }
