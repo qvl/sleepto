@@ -68,7 +68,7 @@ func main() {
 	flag.Parse()
 
 	if *versionFlag {
-		fmt.Printf("ghbackup %s %s %s\n", version, runtime.GOOS, runtime.GOARCH)
+		fmt.Printf("sleepto %s %s %s\n", version, runtime.GOOS, runtime.GOARCH)
 		os.Exit(0)
 	}
 
