@@ -1,9 +1,7 @@
 brew:
-  repo: qvl/brew
+  repo: qvl/homebrew-tap
+  folder: Formula
 build:
-  goarch:
-    - amd64
-    - 386
   goos:
     - windows
     - darwin
