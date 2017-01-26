@@ -104,7 +104,7 @@ ps fux
 ```
 - Immediately finish sleeping:
 ```
-kill -s ALRM YOUR_PID
+sudo systemctl kill -s ALRM servicename
 ```
 
 
