@@ -17,14 +17,12 @@ var strDays = map[string]time.Weekday{
 	"su": time.Sunday,
 }
 
-type weekdaylist struct {
-	list []time.Weekday
-}
+type weekdaylist []time.Weekday
 
 func (l *weekdaylist) String() string {
-	s := make([]string, len(l.list))
-	for i := range l.list {
-		s[i] = dayToString(l.list[i])
+	s := make([]string, len(*l))
+	for i := range *l {
+		s[i] = dayToString((*l)[i])
 	}
 	return strings.Join(s, ",")
 }
@@ -45,18 +43,15 @@ func (l *weekdaylist) Set(s string) error {
 		if !ok {
 			return fmt.Errorf("invalid day at index %d: %s", i, d)
 		}
-		l.list = append(l.list, x)
+		*l = weekdaylist(append(*l, x))
 	}
 	return nil
 }
 
 // Weekdaylist defines a flag for a comma-separated list of week days.
 // Valid values are mo, tu, we, th, fr, sa, su.
-// Call the returned function after flag.Parse to get the value.
-func Weekdaylist(name, usage string) func() []time.Weekday {
-	l := &weekdaylist{}
-	flag.Var(l, name, usage)
-	return func() []time.Weekday {
-		return l.list
-	}
+func Weekdaylist(name, usage string) *[]time.Weekday {
+	l := &[]time.Weekday{}
+	flag.Var((*weekdaylist)(l), name, usage)
+	return l
 }

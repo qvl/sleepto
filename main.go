@@ -75,12 +75,12 @@ func main() {
 	now := time.Now()
 
 	next := match.Next(now, match.Condition{
-		Month:   month(),
-		Weekday: weekday(),
-		Day:     day(),
-		Hour:    hour(),
-		Minute:  minute(),
-		Second:  second(),
+		Month:   *month,
+		Weekday: *weekday,
+		Day:     *day,
+		Hour:    *hour,
+		Minute:  *minute,
+		Second:  *second,
 	})
 
 	// No conditions specified

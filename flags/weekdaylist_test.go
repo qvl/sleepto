@@ -33,12 +33,12 @@ func TestWeekdaylist(t *testing.T) {
 			t.Errorf("parsing %s should have failed", tt.text)
 			continue
 		}
-		if !equalWeekday(l.list, tt.parsed) {
+		if !equalWeekday(l, tt.parsed) {
 			t.Errorf(`
 %d.
 Input:    %s
 Expected: %v
-Got       %v`, i, tt.text, tt.parsed, l.list)
+Got       %v`, i, tt.text, tt.parsed, l)
 		}
 	}
 
