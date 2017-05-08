@@ -54,7 +54,7 @@ func main() {
 		versionFlag = flag.Bool("version", false, "Print binary version")
 		month       = flags.Monthlist("month", "1 to 12")
 		weekday     = flags.Weekdaylist("weekday", "mo,tu,we,th,fr,sa,su")
-		day         = flags.Intlist("day", "0 to 31", 0, 31)
+		day         = flags.Intlist("day", "1 to 31", 1, 31)
 		hour        = flags.Intlist("hour", "0 to 23", 0, 23)
 		minute      = flags.Intlist("minute", "0 to 59", 0, 59)
 		second      = flags.Intlist("second", "0 to 59", 0, 59)

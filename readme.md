@@ -46,7 +46,7 @@ Thanks to [runwhen](http://code.dogmap.org/runwhen/) for inspiration.
 
     Flags:
       -day value
-          0 to 31
+          1 to 31
       -hour value
           0 to 23
       -minute value
@@ -56,7 +56,7 @@ Thanks to [runwhen](http://code.dogmap.org/runwhen/) for inspiration.
       -second value
           0 to 59
       -silent
-          Surpress all output
+          Suppress all output
       -version
           Print binary version
       -weekday value
