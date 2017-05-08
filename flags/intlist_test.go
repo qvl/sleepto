@@ -20,7 +20,7 @@ func TestIntlist(t *testing.T) {
 	}
 
 	for i, tt := range tests {
-		l := intlist{min: 0, max: 10, list: &[]int{}}
+		l := intlist{min: 0, max: 10}
 		if err := l.Set(tt.text); err != nil {
 			if !tt.invalid {
 				t.Errorf("parsing %s failed unexpectedly: %v", tt.text, err)
@@ -31,7 +31,7 @@ func TestIntlist(t *testing.T) {
 			t.Errorf("parsing %s should have failed", tt.text)
 			continue
 		}
-		if !equal(*l.list, tt.parsed) {
+		if !equal(l.list, tt.parsed) {
 			t.Errorf(`
 %d.
 Input:    %s
@@ -40,6 +40,9 @@ Got       %v`, i, tt.text, tt.parsed, l.list)
 		}
 	}
 
+	if (&intlist{}).String() != "" {
+		t.Errorf("Non empty String() output: %s", (&intlist{}).String())
+	}
 }
 
 func equal(a []int, b []int) bool {

@@ -33,15 +33,18 @@ func TestMonthlist(t *testing.T) {
 			t.Errorf("parsing %s should have failed", tt.text)
 			continue
 		}
-		if !equalMonth(l, tt.parsed) {
+		if !equalMonth(l.list, tt.parsed) {
 			t.Errorf(`
 %d.
 Input:    %s
 Expected: %v
-Got       %v`, i, tt.text, tt.parsed, l)
+Got       %v`, i, tt.text, tt.parsed, l.list)
 		}
 	}
 
+	if (&monthlist{}).String() != "" {
+		t.Errorf("Non empty String() output: %s", (&monthlist{}).String())
+	}
 }
 
 func equalMonth(a []time.Month, b []time.Month) bool {

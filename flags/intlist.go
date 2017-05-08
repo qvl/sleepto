@@ -10,13 +10,13 @@ import (
 type intlist struct {
 	min  int
 	max  int
-	list *[]int
+	list []int
 }
 
 func (l *intlist) String() string {
-	s := make([]string, len(*l.list))
-	for i := range *l.list {
-		s[i] = strconv.Itoa((*l.list)[i])
+	s := make([]string, len(l.list))
+	for i := range l.list {
+		s[i] = strconv.Itoa(l.list[i])
 	}
 	return strings.Join(s, ",")
 }
@@ -34,14 +34,17 @@ func (l *intlist) Set(s string) error {
 		if x > l.max {
 			return fmt.Errorf("%d is bigger than maximum %d", x, l.max)
 		}
-		*l.list = append(*l.list, x)
+		l.list = append(l.list, x)
 	}
 	return nil
 }
 
 // Intlist defines a flag for a comma-separated list of integers.
-func Intlist(name, usage string, min, max int) *[]int {
-	l := &[]int{}
-	flag.Var(&intlist{list: l, min: min, max: max}, name, usage)
-	return l
+// Call the returned function after flag.Parse to get the value.
+func Intlist(name, usage string, min, max int) func() []int {
+	l := &intlist{min: min, max: max}
+	flag.Var(l, name, usage)
+	return func() []int {
+		return l.list
+	}
 }
