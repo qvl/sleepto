@@ -4,7 +4,7 @@ package match
 
 import "time"
 
-// Condition are used to match a time.
+// Condition is used to match a time.
 // All fields are optional and can be used in any combination.
 // For each field one value of the list has
 // to match to find a match for the condition.
