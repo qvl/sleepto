@@ -62,6 +62,28 @@ func TestEcho(t *testing.T) {
 	}
 }
 
+func TestInvalid(t *testing.T) {
+	done := make(chan struct{})
+
+	// Run binary
+	go func() {
+		now := time.Now()
+		y := strconv.Itoa(now.Year())
+		cmd := exec.Command(tmpbin, "-year", y)
+		var stderr bytes.Buffer
+		cmd.Stderr = &stderr
+		out, err := cmd.Output()
+		equal(t, "exit status 1", err.Error(), "exit code")
+		equal(t, "", string(out), "stdout")
+		equal(t, "year must be > current year ("+y+")", stderr.String(), "stderr")
+		close(done)
+	}()
+
+	if err := timing(done, 0, 1); err != nil {
+		t.Error(err)
+	}
+}
+
 func TestAlarm(t *testing.T) {
 	done := make(chan struct{})
 	m := strconv.Itoa(int(time.Now().Month()))

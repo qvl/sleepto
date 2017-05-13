@@ -31,6 +31,10 @@ Thanks to [runwhen](http://code.dogmap.org/runwhen/) for inspiration.
     The condition flags take one or more value each.
     Values are separated by comma.
 
+    Note that conditions match not the current, but the next possible match.
+    When the current date is March 2017
+    and you run 'sleepto -month 3' the execution time is March 1, 2018.
+
     A command can be specified optionally.
     All arguments following the command are passed to it.
 
@@ -46,21 +50,23 @@ Thanks to [runwhen](http://code.dogmap.org/runwhen/) for inspiration.
 
     Flags:
       -day value
-          1 to 31
+            1 to 31
       -hour value
-          0 to 23
+            0 to 23
       -minute value
-          0 to 59
+            0 to 59
       -month value
-          1 to 12
+            1 to 12
       -second value
-          0 to 59
+            0 to 59
       -silent
-          Suppress all output
+            Suppress all output
       -version
-          Print binary version
+            Print binary version
       -weekday value
-          mo,tu,we,th,fr,sa,su
+            mo,tu,we,th,fr,sa,su
+      -year value
+            list of years
 
     For more visit: https://qvl.io/sleepto
 

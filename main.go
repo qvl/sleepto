@@ -30,6 +30,10 @@ All flags are optional and can be used in any combination.
 The condition flags take one or more value each.
 Values are separated by comma.
 
+Note that conditions match not the current, but the next possible match.
+When the current date is March 2017
+and you run 'sleepto -month 3' the execution time is March 1, 2018.
+
 A command can be specified optionally.
 All arguments following the command are passed to it.
 
@@ -52,8 +56,9 @@ func main() {
 	var (
 		silent      = flag.Bool("silent", false, "Suppress all output")
 		versionFlag = flag.Bool("version", false, "Print binary version")
-		month       = flags.Monthlist("month", "1 to 12")
-		weekday     = flags.Weekdaylist("weekday", "mo,tu,we,th,fr,sa,su")
+		year        = flags.Yearlist("year")
+		month       = flags.Monthlist("month")
+		weekday     = flags.Weekdaylist("weekday")
 		day         = flags.Intlist("day", "1 to 31", 1, 31)
 		hour        = flags.Intlist("hour", "0 to 23", 0, 23)
 		minute      = flags.Intlist("minute", "0 to 59", 0, 59)
@@ -75,6 +80,7 @@ func main() {
 	now := time.Now()
 
 	next := match.Next(now, match.Condition{
+		Year:    year(),
 		Month:   month(),
 		Weekday: weekday(),
 		Day:     day(),
@@ -86,6 +92,11 @@ func main() {
 	// No conditions specified
 	if next.Equal(now) {
 		flag.Usage()
+		os.Exit(1)
+	}
+	// No matching conditions
+	if next.IsZero() {
+		fmt.Fprintf(os.Stderr, "year must be > current year (%d)", now.Year())
 		os.Exit(1)
 	}
 

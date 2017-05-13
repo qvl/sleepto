@@ -53,9 +53,9 @@ func (l *weekdaylist) Set(s string) error {
 // Weekdaylist defines a flag for a comma-separated list of week days.
 // Valid values are mo, tu, we, th, fr, sa, su.
 // Call the returned function after flag.Parse to get the value.
-func Weekdaylist(name, usage string) func() []time.Weekday {
+func Weekdaylist(name string) func() []time.Weekday {
 	l := &weekdaylist{}
-	flag.Var(l, name, usage)
+	flag.Var(l, name, "mo,tu,we,th,fr,sa,su")
 	return func() []time.Weekday {
 		return l.list
 	}

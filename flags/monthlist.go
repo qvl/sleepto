@@ -39,9 +39,9 @@ func (l *monthlist) Set(s string) error {
 // Monthlist defines a flag for a comma-separated list of months.
 // Valid values are between 1 and 12.
 // Call the returned function after flag.Parse to get the value.
-func Monthlist(name, usage string) func() []time.Month {
+func Monthlist(name string) func() []time.Month {
 	l := &monthlist{}
-	flag.Var(l, name, usage)
+	flag.Var(l, name, "1 to 12")
 	return func() []time.Month {
 		return l.list
 	}
