@@ -41,11 +41,11 @@ Thanks to [runwhen](http://code.dogmap.org/runwhen/) for inspiration.
     When the process receives a SIGALRM signal it finishes immediately.
 
     Examples:
-      # Every 10th of month at 3pm
+      # Next 10th of month at 3pm
       sleepto -day 10 -hour 15 /bin/send-report
-      # Every 15 minutes
+      # Next occurence of one quarter of hour
       sleepto -minute 0,15,30,45 say "Hello human"
-      # Every day at 1am
+      # Next day at 1am
       sleepto -hour 1 && ~/dbbackup.sh
 
     Flags:
