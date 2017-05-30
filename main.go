@@ -109,7 +109,7 @@ func main() {
 	signal.Notify(sigChan, syscall.SIGALRM)
 	select {
 	case <-sigChan:
-	case <-time.After(next.Sub(now)):
+	case <-time.After(time.Until(next)):
 	}
 
 	// Replace current process if command is specified
