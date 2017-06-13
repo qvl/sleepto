@@ -122,8 +122,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
-	err = syscall.Exec(cmd, args, os.Environ())
-	if err != nil {
+	if err = syscall.Exec(cmd, args, os.Environ()); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
