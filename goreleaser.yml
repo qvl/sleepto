@@ -1,5 +1,3 @@
-homepage: &homepage https://qvl.io/sleepto
-description: &description Alternative to traditional task schedulers
 build:
   goos:
     - windows
@@ -28,13 +26,13 @@ brew:
     owner: qvl
     name: homebrew-tap
   folder: Formula
-  homepage: *homepage
-  description: *description
+  homepage: https://qvl.io/sleepto
+  description: Alternative to traditional task schedulers
 fpm:
-  homepage: *homepage
-  description: *description
+  homepage: https://qvl.io/sleepto
+  description: Alternative to traditional task schedulers
   maintainer: Jorin Vogel <hi@jorin.me>
   license: MIT
-  vendor: GoReleaser
+  vendor: qvl
   formats:
     - deb
