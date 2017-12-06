@@ -16,7 +16,7 @@ This allows you to:
 - Use your systems default logging system.
 - No conflicts - next task is only scheduled after previous one finished.
 - Trigger immediate execution by sending a `SIGALRM` signal.
-- Specify execution times with the precision of seconds (Cron only support minutes).
+- Specify execution times with the precision of seconds (Cron only supports minutes).
 - Always know the time of the next execution.
 
 Thanks to [runwhen](http://code.dogmap.org/runwhen/) for inspiration.
